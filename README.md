@@ -79,7 +79,7 @@ This is not a production-ready application. The current setup is intended for de
 - More components need to be added to Storybook to showcase the UI components.
 
 #### 5. Infrastructure
-- Terraform configuration needs to be updated to deploy the application to AWS in ECS cluster with Fargate.
+- Terraform configuration needs to be updated to deploy the application to AWS in ECS cluster with Fargate or S3 static website hosting.
 - Ensure that the frontend is served using a CDN for better performance.
 - Ensure that the application is highly available and scalable by using AWS services like Load Balancer, Auto Scaling, etc.
 
