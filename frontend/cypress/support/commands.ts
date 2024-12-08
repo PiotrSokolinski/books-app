@@ -2,38 +2,6 @@
 
 import { Book } from '../../src/types/book';
 
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       visitLocalhost(): Chainable<void>;
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>;
-//       dismiss(
-//         subject: string,
-//         options?: Partial<TypeOptions>,
-//       ): Chainable<Element>;
-//       visit(
-//         originalFn: CommandOriginalFn,
-//         url: string,
-//         options: Partial<VisitOptions>,
-//       ): Chainable<Element>;
-//     }
-//   }
-// }
-
-// // eslint-disable-next-line @typescript-eslint/no-namespace
-// declare namespace Cypress {
-//   interface Chainable {
-//     visitLocalhost(): Chainable<never>;
-//     createBook(
-//       book: Record<string, unknown>,
-//     ): Chainable<Record<string, unknown>>;
-//   }
-// }
-
-// Cypress.Commands.add('visitLocalhost', () => {
-//   cy.visit('');
-// });
-
 Cypress.Commands.add('visitLocalhost', () => {
   cy.visit('');
 });
