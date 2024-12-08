@@ -151,7 +151,7 @@ This is not a production-ready application. The current setup is intended for de
 - Perform load testing to ensure the application can handle the expected traffic.
 
 ## Common
-1. Codebase
+#### 1. Codebase
 - Configure SonarCloud to analyze the codebase for code quality and security vulnerabilities.
 
 
