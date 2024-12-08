@@ -99,6 +99,10 @@ This is not a production-ready application. The current setup is intended for de
 #### 10. Monitoring
 - Add monitoring and alerting to the application to track performance and errors.
 
+### 11. Performance Optimization
+- Optimize the application for performance by reducing bundle size, lazy loading components, and optimizing images.
+- Enable caching mechanisms where appropriate (e.g., service workers, browser caching).
+
 ## Backend
 
 #### 1. Unit tests
