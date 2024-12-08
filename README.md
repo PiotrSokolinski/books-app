@@ -91,6 +91,7 @@ This is not a production-ready application. The current setup is intended for de
 
 #### 8. Security
 - Add authentication and authorization mechanisms to secure the application.
+- Use HTTPS for secure communication by adding an SSL certificate and updating the server configuration.
 
 #### 9. Logging
 - Create own logger that is designed for production use for the specific needs of the application. This can be done using a logger service (e.g., Winston, Pino) to manage log levels and output formats.
