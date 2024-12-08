@@ -63,7 +63,7 @@ This will stop and remove the Docker containers.
 
 This is not a production-ready application. The current setup is intended for development purposes only with some more advanced concepts that can be used in production.
 
-### Changes to make it production-ready:
+### Changes to make it more production-ready:
 
 ## Frontend:
 #### 1. Unit tests
@@ -149,6 +149,10 @@ This is not a production-ready application. The current setup is intended for de
 
 #### 14. Load Testing:
 - Perform load testing to ensure the application can handle the expected traffic.
+
+## Common
+1. Codebase
+- Configure SonarCloud to analyze the codebase for code quality and security vulnerabilities.
 
 
 ---
