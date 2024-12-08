@@ -11,7 +11,7 @@ import { AppModule } from './app.module';
 // TODO: B7 - Add proper authentication and authorization
 // TODO: B9 - Create own logger service that suits the needs of the application
 // TODO: B10 - Add monitoring and alerting
-// TODO: B11 - Add caching
+// TODO: B11 - Add caching and optimize queries
 // TODO: B12 - Add consistent error handling across all controllers, because we have only one - this was not needed
 // TODO: B14 - Perform load testing
 async function bootstrap() {

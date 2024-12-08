@@ -139,7 +139,7 @@ This is not a production-ready application. The current setup is intended for de
 
 #### 11. Performance Optimization:
 - Enable caching mechanisms where appropriate (e.g., Redis/ValKey).
-- Optimize database queries and indexes for better performance in full text search queries.
+- Optimize database queries and indexes for better performance in full text search queries (e.g. tsvector, tsquery, GIN, pg_trgm)
 
 #### 12. Error Handling:
 - Ensure consistent error handling, especially for API responses (using error middleware).

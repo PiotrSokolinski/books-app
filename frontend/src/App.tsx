@@ -12,7 +12,7 @@ import { BooksCreate } from './components/pages/BooksCreate/BooksCreate';
 import { theme } from './theme/theme';
 
 // TODO: F9 - Add logger and more robust logging across the application
-// TODO: F10 - Add monitoring (eg. performance monitoring) and alerting across the application using third-party tools
+// TODO: F10 - Add monitoring (e.g. performance monitoring) and alerting across the application using third-party tools
 function App() {
   const apiURL = APP_CONFIG.VITE_API_URL;
   return (
