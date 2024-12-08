@@ -1,0 +1,5 @@
+bucket = ""
+key = ""
+region = "us-east-1"
+role_arn = ""
+dynamodb_table = ""

@@ -1,0 +1,17 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2020",
+    "lib": ["es5", "dom"],
+    "types": [
+      "vitest/globals",
+      "@testing-library/jest-dom"
+    ],
+    "moduleResolution": "bundler"
+  },
+}

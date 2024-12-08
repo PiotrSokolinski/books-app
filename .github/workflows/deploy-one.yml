@@ -1,0 +1,69 @@
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+on:
+  workflow_call:
+    inputs:
+      env:
+        required: true
+        type: string
+      working-directory:
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      env:
+        required: true
+        default: dev
+        type: choice
+        description: The environment to deploy to.
+        options:
+          - dev
+          - sandbox
+      service:
+        required: true
+        type: choice
+        description: The service use for the deployment.
+        options:
+          - frontend
+          - backend
+
+jobs:
+  build-ecr-image-frontend:
+    if: inputs.service == 'frontend'
+    uses: ./.github/workflows/build-image.yml
+    secrets: inherit
+    with:
+      DEPLOYMENT_ENV: ${{ inputs.env }}
+      ACCOUNT_ID: {ACCOUNT_ID}
+      ECR_REPOSITORY_SUFFIX: {ECR_BACKEND}
+
+  build-ecr-image-backend:
+    if: inputs.service == 'backend'
+    uses: ./.github/workflows/build-image.yml
+    secrets: inherit
+    with:
+      DEPLOYMENT_ENV: ${{ inputs.env }}
+      ACCOUNT_ID: {ACCOUNT_ID}
+      ECR_REPOSITORY_SUFFIX: {ECR_FRONTEND}
+
+  deploy-fronted:
+    if: inputs.service == 'frontend'
+    uses: ./.github/workflows/terraform-deploy.yml@main
+    secrets: inherit
+    needs: build-ecr-image-frontend
+    with:
+      DEPLOYMENT_ENV: ${{ inputs.env }}
+      WORKING_DIRECTORY: ${{ inputs.working-directory }}/infra
+      EXTRA_TF_ARGS: '-var="ecr_image_tag=${{ github.sha }}"'
+
+  deploy-backend:
+    if: inputs.service == 'backend'
+    uses: ./.github/workflows/terraform-deploy.yml@main
+    needs: build-ecr-image-backend
+    secrets: inherit
+    with:
+      DEPLOYMENT_ENV: ${{ inputs.env }}
+      WORKING_DIRECTORY: ${{ inputs.working-directory }}/infra
+      EXTRA_TF_ARGS: '-var="ecr_image_tag=${{ github.sha }}"'

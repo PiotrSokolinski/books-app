@@ -1,0 +1,73 @@
+name: Validate Terraform
+
+on:
+  workflow_call:
+    inputs:
+      WORKING_DIRECTORY:
+        type: string
+        default: infra
+      EXTRA_TF_ARGS:
+        type: string
+        default: ""
+
+jobs:
+  terraform_fmt:
+    name: Terraform Fmt
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Store github token in config
+        shell: bash
+        run: echo "Here token should be configured"
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+      - name: Terraform fmt check
+        shell: bash
+        run: |
+          cd ./${{ inputs.WORKING_DIRECTORY }}
+          terraform fmt -check -recursive
+
+  getenvs:
+    name: Get terraform environments
+    runs-on: ubuntu-latest
+    outputs:
+      envs: ${{ steps.envs.outputs.envs }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: List environments
+        id: envs
+        shell: bash
+        run: |
+          cd ./${{ inputs.WORKING_DIRECTORY }}/env
+          echo envs=$(tree -L 1 -d -J | jq '[.[0].contents[].name]') >> "$GITHUB_OUTPUT"
+
+  terraform-validate:
+    needs: getenvs
+    name: Terraform Validate (${{ matrix.env }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env: ${{ fromJSON(needs.getenvs.outputs.envs) }}
+      fail-fast: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Store github token in config
+        shell: bash
+        run: echo "Here token should be configured"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+
+      - name: Terraform validate
+        shell: bash
+        if: always()
+        run: echo "Terraform validate for ${{ matrix.env }}"

@@ -1,0 +1,49 @@
+name: build-image
+
+on:
+  workflow_call:
+    inputs:
+      DEPLOYMENT_ENV:
+        required: true
+        type: string
+      ACCOUNT_ID:
+        required: true
+        type: string
+      WORKING_DIRECTORY:
+        type: string
+        required: true
+      DOCKERFILE:
+        type: string
+        required: true
+        default: Dockerfile
+
+jobs:
+  build-ecr-image:
+    name: Update ECR With Latest Image
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_TAG: ${{ github.sha }}
+      ECR_AGGREGATOR_REPOSITORY: ${{ inputs.DEPLOYMENT_ENV }}-${{ inputs.ECR_REPOSITORY_SUFFIX }}
+      IAM_ROLE: {ROLE_TO_ASSUME}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Store Github Token in Config
+        run: echo "Here token should be configured"
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+      - name: Login to ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+      - name: Build Docker Image
+        working-directory: .
+        env:
+          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+        run: echo "Build of the image."
+      - name: Push Docker Image
+        working-directory: roster-generator
+        env:
+          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+        run: echo "Push image to ECR."

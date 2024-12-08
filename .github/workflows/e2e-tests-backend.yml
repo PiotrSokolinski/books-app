@@ -1,0 +1,37 @@
+on:
+  workflow_call:
+
+jobs:
+  run_e2e_tests:
+    name: Run E2E tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure git for private modules
+        run: echo "Here token should be configured"
+
+      - name: Configure AWS credentials for terraform
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-1
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.X"
+          cache-dependency-path: ./frontend/package-lock.json
+      - name: Initialize terraform
+        shell: bash
+        run: echo "Initialize terraform"
+      - name: Get terraform values
+        id: terraform-output
+        shell: bash
+        run: echo "Get terraform values needed for tests"
+      - name: Configure AWS credentials for tests
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-1
+      - name: Run tests
+        run: echo "Run E2E tests for backend"

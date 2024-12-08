@@ -1,0 +1,33 @@
+name: Deploy Terraform
+
+on:
+  workflow_call:
+    inputs:
+      WORKING_DIRECTORY:
+        type: string
+        default: infra
+      DEPLOYMENT_ENV:
+        required: true
+        type: string
+      EXTRA_TF_ARGS:
+        type: string
+        default: ""
+
+jobs:
+  deploy_terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Store github token in config
+        shell: bash
+        run: echo "Here token should be configured"
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+
+      - name: Deploy
+        shell: bash
+        if: always()
+        run: echo "Deploying Terraform"

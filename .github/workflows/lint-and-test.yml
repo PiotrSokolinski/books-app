@@ -1,0 +1,77 @@
+name: Test
+
+on:
+  workflow_call:
+    inputs:
+      WORKING_DIRECTORY:
+        type: string
+
+env:
+  TZ: Europe/Warsaw
+
+jobs:
+  lint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.X"
+          cache-dependency-path: ./frontend/package-lock.json
+
+      - name: Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: ${{ inputs.WORKING_DIRECTORY }}
+
+      - name: Lint
+        working-directory: ${{ inputs.WORKING_DIRECTORY }}
+        run: npm run lint
+
+  typecheck:
+    name: ʦ TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.X"
+          cache-dependency-path: ./frontend/package-lock.json
+
+      - name: Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: ${{ inputs.WORKING_DIRECTORY }}
+
+      - name: Type check
+        working-directory: ${{ inputs.WORKING_DIRECTORY }}
+        run: npm run typecheck
+
+  test:
+    name: ⚡ Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.X"
+          cache-dependency-path: ./frontend/package-lock.json
+
+      - name: Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: ${{ inputs.WORKING_DIRECTORY }}
+
+      - name: Run test
+        working-directory: ${{ inputs.WORKING_DIRECTORY }}
+        run: npm run test

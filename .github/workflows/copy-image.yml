@@ -1,0 +1,56 @@
+name: copy-image
+
+on:
+  workflow_call:
+    inputs:
+      DEPLOYMENT_ENV:
+        type: string
+        required: true
+      TARGET_IAM_ROLE:
+        type: string
+        required: true
+      TARGET_ACCOUNT_ID:
+        type: string
+        required: true
+      ECR_REPOSITORY_SUFFIX:
+        type: string
+        required: true
+
+jobs:
+  copy-ecr-image:
+    name: Copy ECR Image
+    runs-on: ubuntu-latest
+    env:
+      IAM_ROLE_DEV: {ROLE_DEV}
+      ECR_REPOSITORY_DEV: dev-${{ inputs.ECR_REPOSITORY_SUFFIX }}
+      IMAGE_TAG: ${{ github.sha }}
+      ECR_REPOSITORY_TARGET: ${{ inputs.DEPLOYMENT_ENV }}-${{ inputs.ECR_REPOSITORY_SUFFIX }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Store Github Token in Config
+        shell: bash
+        run: echo "Here token should be configured"
+      - name: Configure AWS Dev Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+      - name: Login to Dev ECR
+        id: login-ecr-dev
+        uses: aws-actions/amazon-ecr-login@v2
+      - name: Pull ECR Image From Dev
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr-dev.outputs.registry }}
+        run: echo "Pull and tag image."
+      - name: Configure AWS Target Environment Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+      - name: Login to Target Environment ECR
+        id: login-ecr-target
+        uses: aws-actions/amazon-ecr-login@v2
+      - name: Push ECR Image to Target Environment
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr-target.outputs.registry }}
+        run: echo "Push image."
+

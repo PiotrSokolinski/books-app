@@ -1,0 +1,26 @@
+concurrency:
+  group: validate-fronted
+  cancel-in-progress: false
+
+on:
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - "backend/**"
+      - "**/*.md"
+      - "**/Makefile"
+
+jobs:
+  static-tests:
+    name: Static tests
+    uses: ./.github/workflows/lint-and-test.yml
+    with:
+      WORKING_DIRECTORY: fronted/infra
+
+  infrastructure-validate:
+    name: Validate Infrastructure
+    uses: ./.github/workflows/terraform-validate.yml@main
+    secrets: inherit
+    with:
+      WORKING_DIRECTORY: fronted/infra
+      EXTRA_TF_ARGS: '-var="ecr_image_tag=${{ github.sha }}"'
