@@ -3,6 +3,7 @@
   "rootDir": ".",
   "testEnvironment": "node",
   "testMatch": ["**/*.e2e-spec.ts", "**/*.smoke-spec.ts"],
+  "setupFilesAfterEnv": ["<rootDir>/setup-test.ts"],
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   }
